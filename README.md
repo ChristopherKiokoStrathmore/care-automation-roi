@@ -1,18 +1,40 @@
 # Contact-centre automation ROI and cost-to-serve
 
-Public portfolio project by Chris Nguu. It prices a contact-centre automation programme from editable assumptions, and it uses the public Bitext telco intent names to say which intents a documented rule would treat as automation candidates.
+Automating customer care saves agent time, but at what licence and build cost, and how sensitive is the case to containment rates?
 
-No employer data and no customer data are used. Every cost, wage, handle time, volume, containment rate, demand weight, and triage rate is an illustrative placeholder. The currency label is KES (illustrative). Nothing in the result tables is a market rate or an operator measurement.
+This repo is a configurable cost-benefit model: editable assumptions in `assumptions.yaml`, 6 scenarios, cost to serve per contact, payback and year-1 ROI, a sensitivity tornado, and an n8n escalation workflow. Structured as a cost-benefit analysis. Part of an independent portfolio series on telecom customer analytics, built alongside my MSc in Data Science. It builds on the CRISP-DM projects in that series.
 
-## Model logic
+## Key results (capability and scope)
+
+- 6 scenarios from voice-only baseline to bot with triage routing.
+- Metrics computed: cost per contact, annual operating saving, net annual benefit, payback months, year-1 ROI, year-1 net cash, plus a sensitivity analysis.
+- 24 automated tests; CI regenerates reports and checks they match.
+- All inputs are illustrative placeholders (KES, illustrative); swap in real data and rerun.
+
+## Problem
+
+A contact centre that moves work off the voice agent onto a bot only saves money when those contacts stay contained, and only after licence and build cost. This model prices that case from editable assumptions and shows which assumption moves year-1 cash the most.
 
 A contact has an intent. The intent's automation class comes from the rule in the generated section below, applied to the public Bitext category and intent name. The class is `lookup`, `structured_transaction`, or `human_required`.
 
 Demand is a weight per intent in `assumptions.yaml`. The weight is divided by the sum of the weights. Bitext publishes 1000 training examples of each intent, so those counts are not used as demand.
 
-The baseline sends every contact to a voice agent.
+## Options
 
-The bot programme offers each class a mix of USSD bot, chat bot, IVR, and voice agent. The mix is an assumption and sums to 1 inside each class. A contact offered to USSD, chat bot, or IVR always pays that channel's unit cost. With probability equal to the containment rate it stops there. Otherwise it also pays one voice-agent contact. There is one spill step, and no further repeat contact.
+The comparison is six scenarios. Labels and figures are in the generated scenario table. Every input is an illustrative placeholder.
+
+1. Baseline: every contact on a voice agent. Licence and build cost are zero, so payback and ROI are not defined.
+2. Bot programme, low containment: each containment rate is the base assumption minus `containment_scenario_delta`, clamped to [0, 1].
+3. Bot programme, base containment: the headline bot case. No triage, and no assumed quality value.
+4. Bot programme, high containment: each containment rate is the base assumption plus the same delta, clamped to [0, 1].
+5. Bot programme plus emergency routing, with an assumed quality value.
+6. The same triage path with that quality value set to zero, so the operating result can be read on its own.
+
+The baseline sends every contact to a voice agent. The bot programme offers each class a mix of USSD bot, chat bot, IVR, and voice agent. The mix is an assumption and sums to 1 inside each class. A contact offered to USSD, chat bot, or IVR always pays that channel's unit cost. With probability equal to the containment rate it stops there. Otherwise it also pays one voice-agent contact. There is one spill step, and no further repeat contact.
+
+Triage is a separate switch on the base containment path. The public [MULTI-HEAD](https://github.com/ChristopherKiokoStrathmore/MULTI-HEAD-) classifier has urgency labels `low`, `medium`, and `emergency`. This model treats `emergency` as the urgent class. A predicted emergency contact skips the bot and pays the senior-agent unit cost. Prevalence, precision, and recall are assumptions, checked so they can sit in one confusion matrix: precision must be at least recall times prevalence. The true-positive value and the false-negative penalty are assumptions as well. They are reported in their own column so they are not mixed into the operating cost. MULTI-HEAD documents no accuracy metric. This repo does not treat any triage accuracy as a measured figure. The smoke gates in that repo are described there as harness-health thresholds, and they are not copied in as model quality.
+
+## Costs
 
 Unit cost of a contact completed on a channel, with no spill:
 
@@ -22,11 +44,31 @@ Unit cost of a contact completed on a channel, with no spill:
 - USSD bot: sessions per contact times the cost per session.
 - Chat bot: the unstaffed platform charge only.
 
-Annual operating saving is annual contacts times (baseline cost per contact minus scenario cost per contact). Net annual benefit subtracts the annual licence and, in the triage scenario, adds the assumed quality value. Payback in months is build cost divided by net annual benefit over 12, and it is undefined when net annual benefit is not positive. Year-1 ROI is (net annual benefit minus build cost) divided by build cost. Year-1 net cash is net annual benefit minus build cost. Build cost is treated as spent in year 1, so a payback longer than 12 months goes with a negative year-1 ROI. There is no discount rate, tax, or ramp-up.
+Build cost and the annual licence sit outside the unit cost. The bot programme uses `investment.bot_build_cost` and `investment.bot_annual_licence`. The triage scenarios add `investment.triage_build_cost` and `investment.triage_annual_licence` on top of the bot figures. The currency label is KES (illustrative).
 
-Triage is a separate switch on the base containment path. The public [MULTI-HEAD](https://github.com/ChristopherKiokoStrathmore/MULTI-HEAD-) classifier has urgency labels `low`, `medium`, and `emergency`. This model treats `emergency` as the urgent class. A predicted emergency contact skips the bot and pays the senior-agent unit cost. Prevalence, precision, and recall are assumptions, checked so they can sit in one confusion matrix: precision must be at least recall times prevalence. The true-positive value and the false-negative penalty are assumptions as well. They are reported in their own column so they are not mixed into the operating cost. MULTI-HEAD documents no accuracy metric. This repo does not treat any triage accuracy as a measured figure. The smoke gates in that repo are described there as harness-health thresholds, and they are not copied in as model quality.
+## Benefits
 
-The sensitivity chart moves one assumption by the relative swing in `assumptions.yaml` and recomputes year-1 net cash for the bot programme at base containment. The other assumptions stay put.
+Annual operating saving is annual contacts times (baseline cost per contact minus scenario cost per contact). The triage scenarios also book an assumed quality value: true positives times `triage.value_per_true_positive`, minus false negatives times `triage.penalty_per_false_negative`, times annual contacts. That quality figure is an assumption, reported in its own column. The zero-value triage row shows the same operating path with that assumption removed.
+
+Net annual benefit is the operating saving, plus the assumed quality value, minus the annual licence.
+
+## ROI and payback
+
+The model has no discount rate and does not compute NPV. Payback in months is build cost divided by net annual benefit over 12, and it is undefined when net annual benefit is not positive. Year-1 ROI is (net annual benefit minus build cost) divided by build cost. Year-1 net cash is net annual benefit minus build cost. Build cost is treated as spent in year 1, so a payback longer than 12 months goes with a negative year-1 ROI. There is no tax and no ramp-up.
+
+## Sensitivity
+
+The sensitivity chart moves one assumption by the relative swing in `assumptions.yaml` and recomputes year-1 net cash for the bot programme at base containment. The other assumptions stay put. Lookup USSD offer moves against the voice-agent share of that class so the shares still sum to 1. A move that would push a share outside [0, 1] is clamped, and the clamp is flagged in the sensitivity table in the generated block.
+
+## Recommendation
+
+On these illustrative placeholders, the bot programme pays back inside year 1 at base containment (payback 8.47 months, year-1 ROI 0.4175, illustrative) and at high containment (payback 5.92 months, year-1 ROI 1.0278, illustrative). At low containment, payback is 14.24 months and year-1 ROI is -0.1571 (illustrative). Both emergency-routing options also miss year-1 payback on these inputs (illustrative): year-1 ROI is -0.1972 with the assumed quality value and -0.6110 with that value set to zero.
+
+The conditional reading is: the bot programme clears a one-year test when containment stays at the base assumption or better, and the low-containment case does not. Adding emergency routing raises cost to serve on these placeholders, and the assumed quality value does not close the year-1 gap. Swap in measured inputs before treating any figure as a business case.
+
+## Implementation note
+
+The n8n export is [workflows/n8n_emergency_escalation.json](workflows/n8n_emergency_escalation.json). [workflows/README.md](workflows/README.md) says how to import it. The file is an export only. It has not been imported into a running n8n instance, and it has not been run live.
 
 ## How to run
 
@@ -45,6 +87,8 @@ python -m care_roi --set volume.annual_contacts=100000 --out /tmp/roi-try
 ```
 
 `--check` regenerates the text reports in a temporary directory and compares them to `reports/`.
+
+`pytest` checks the unit-cost formula, a containment case, the triage counts, payback, the intent rule, the placeholder comments, and that `reports/` plus the generated README block match a fresh run. GitHub Actions runs that suite on `main`.
 
 ## Replace these assumptions with operator data
 
@@ -65,13 +109,9 @@ Keep the formulas. Replace the numbers in `assumptions.yaml`, then rerun `python
 
 After the swap, the rule that tags Bitext names is still only a rule about names. Retire an intent from `lookup` or `structured_transaction` if the operation's own review says a person has to handle it.
 
-## Workflow
+## Data and scope
 
-The n8n export is [workflows/n8n_emergency_escalation.json](workflows/n8n_emergency_escalation.json). [workflows/README.md](workflows/README.md) says how to import it. The file is import-shaped. It has not been run.
-
-## Tests
-
-`pytest` checks the unit-cost formula, a containment case, the triage counts, payback, the intent rule, the placeholder comments, and that `reports/` plus the generated README block match a fresh run. GitHub Actions runs that suite on `main`. The tests do not open a browser. There is no Streamlit app; the CLI is how you change an assumption.
+Built on public Bitext intent names and illustrative assumptions as an independent portfolio project.
 
 <!-- BEGIN GENERATED FIGURES -->
 
@@ -272,4 +312,4 @@ Currency code: KES. Currency label: KES (illustrative).
 - Triage precision and recall are assumptions. MULTI-HEAD does not publish an accuracy figure that this repo uses. Routing value is an assumption, shown separately, and the zero-value row is there so the operating cost can be read on its own.
 - Payback and year-1 ROI ignore discounting, tax, implementation delay, and the cost of a wrong containment definition.
 - The n8n file has not been imported or executed. It does not prove that a live escalation path exists.
-- This is a personal portfolio model, not an operator's cost system and not a customer-experience platform.
+- The calculation stands alone. It does not connect to a live operator cost system or a customer-experience platform.

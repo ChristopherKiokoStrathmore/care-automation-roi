@@ -1,6 +1,6 @@
 # Emergency triage escalation (n8n export)
 
-`n8n_emergency_escalation.json` is a workflow file shaped for n8n's import. It was written in this repository. It has not been imported into a running n8n instance, and it has not been executed against a live queue, a live classifier, or any contact-centre platform.
+A contact labelled `emergency` should leave the automation path and reach a senior agent. `n8n_emergency_escalation.json` is a workflow file shaped for n8n's import. It was written in this repository. It has not been imported into a running n8n instance, and it has not been executed against a live queue, a live classifier, or any contact-centre platform.
 
 ## What it does
 
