@@ -1,0 +1,13 @@
+{
+  "source": "bitext/Bitext-telco-llm-chatbot-training-dataset",
+  "page": "https://huggingface.co/datasets/bitext/Bitext-telco-llm-chatbot-training-dataset",
+  "license": "CDLA-Sharing-1.0",
+  "sha256": "0905820a880783d1a00f92d4f519488479f9eefe770cbfb5737f9462135d6c12",
+  "derived_from_repo": "https://github.com/ChristopherKiokoStrathmore/omnichannel-care-analytics",
+  "derived_file": "data/derived/bitext_by_intent.csv",
+  "n_examples": 26000,
+  "n_intents": 26,
+  "n_categories": 7,
+  "examples_per_intent": 1000,
+  "note": "Intent and category tally only. Training utterances are not copied into this repo. Bitext built this training set with 1000 examples of every intent. Those equal counts are not demand."
+}

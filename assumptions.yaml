@@ -1,0 +1,115 @@
+# Every number in this file is an illustrative placeholder, not a real operator figure.
+# Currency is KES (illustrative). These are not market rates, wage-survey results, or measured volumes.
+# Bitext example counts are not in this file on purpose. Demand weights below are a separate assumption.
+# Edit a value, then run: python -m care_roi
+
+currency_code: KES
+currency_label: "KES (illustrative)"
+note: "Every number in this file is an illustrative placeholder, not a real operator figure."
+
+volume:
+  annual_contacts: 120000  # illustrative placeholder, not a real operator figure
+
+wages:
+  voice_agent_monthly_wage: 80000  # illustrative placeholder, not a real operator figure
+  chat_agent_monthly_wage: 70000  # illustrative placeholder, not a real operator figure
+  senior_agent_monthly_wage: 120000  # illustrative placeholder, not a real operator figure
+  burden_rate: 0.30  # illustrative placeholder, not a real operator figure
+  monthly_productive_hours: 140  # illustrative placeholder, not a real operator figure
+
+handle_time_minutes:
+  voice_agent: 8  # illustrative placeholder, not a real operator figure
+  senior_agent: 10  # illustrative placeholder, not a real operator figure
+  live_chat: 12  # illustrative placeholder, not a real operator figure
+  ivr: 3  # illustrative placeholder, not a real operator figure
+
+channel_variable:
+  voice_telco_per_minute: 1.50  # illustrative placeholder, not a real operator figure
+  ivr_per_minute: 0.80  # illustrative placeholder, not a real operator figure
+  ivr_platform_per_contact: 2.00  # illustrative placeholder, not a real operator figure
+  ussd_per_session: 1.00  # illustrative placeholder, not a real operator figure
+  ussd_sessions_per_contact: 1.20  # illustrative placeholder, not a real operator figure
+  live_chat_platform_per_contact: 3.00  # illustrative placeholder, not a real operator figure
+  chat_bot_platform_per_contact: 3.00  # illustrative placeholder, not a real operator figure
+
+# Share of contacts of that automation class offered to each channel. Each class sums to 1.
+# voice_agent means the contact is served by a voice agent with no automation attempt.
+routing_share:
+  lookup:
+    ussd_bot: 0.80  # illustrative placeholder, not a real operator figure
+    chat_bot: 0.10  # illustrative placeholder, not a real operator figure
+    ivr: 0.05  # illustrative placeholder, not a real operator figure
+    voice_agent: 0.05  # illustrative placeholder, not a real operator figure
+  structured_transaction:
+    ussd_bot: 0.30  # illustrative placeholder, not a real operator figure
+    chat_bot: 0.20  # illustrative placeholder, not a real operator figure
+    ivr: 0.10  # illustrative placeholder, not a real operator figure
+    voice_agent: 0.40  # illustrative placeholder, not a real operator figure
+  human_required:
+    ussd_bot: 0.00  # illustrative placeholder, not a real operator figure
+    chat_bot: 0.00  # illustrative placeholder, not a real operator figure
+    ivr: 0.10  # illustrative placeholder, not a real operator figure
+    voice_agent: 0.90  # illustrative placeholder, not a real operator figure
+
+# Probability the contact is finished on that channel. The rest also pay a voice-agent contact.
+containment_rate:
+  lookup:
+    ussd_bot: 0.70  # illustrative placeholder, not a real operator figure
+    chat_bot: 0.65  # illustrative placeholder, not a real operator figure
+    ivr: 0.50  # illustrative placeholder, not a real operator figure
+  structured_transaction:
+    ussd_bot: 0.40  # illustrative placeholder, not a real operator figure
+    chat_bot: 0.45  # illustrative placeholder, not a real operator figure
+    ivr: 0.20  # illustrative placeholder, not a real operator figure
+  human_required:
+    ussd_bot: 0.00  # illustrative placeholder, not a real operator figure
+    chat_bot: 0.00  # illustrative placeholder, not a real operator figure
+    ivr: 0.00  # illustrative placeholder, not a real operator figure
+
+containment_scenario_delta: 0.20  # illustrative placeholder, not a real operator figure
+
+# Assumed annual demand weights. They are not the Bitext count of 1000 examples per intent.
+demand_weight_by_intent:
+  check_usage: 140  # illustrative placeholder, not a real operator figure
+  invoices: 90  # illustrative placeholder, not a real operator figure
+  check_mobile_payments: 50  # illustrative placeholder, not a real operator figure
+  payment_methods: 30  # illustrative placeholder, not a real operator figure
+  check_excess_data_charges: 40  # illustrative placeholder, not a real operator figure
+  check_signal_coverage: 35  # illustrative placeholder, not a real operator figure
+  check_cancellation_fee: 15  # illustrative placeholder, not a real operator figure
+  pay: 100  # illustrative placeholder, not a real operator figure
+  schedule_payments: 25  # illustrative placeholder, not a real operator figure
+  set_usage_limits: 20  # illustrative placeholder, not a real operator figure
+  change_plan: 45  # illustrative placeholder, not a real operator figure
+  sign_up_for_plan: 30  # illustrative placeholder, not a real operator figure
+  activate_roaming: 20  # illustrative placeholder, not a real operator figure
+  activate_call_management_services: 15  # illustrative placeholder, not a real operator figure
+  deactivate_call_management_services: 10  # illustrative placeholder, not a real operator figure
+  report_problem: 80  # illustrative placeholder, not a real operator figure
+  report_poor_signal_coverage: 40  # illustrative placeholder, not a real operator figure
+  dispute_invoice: 35  # illustrative placeholder, not a real operator figure
+  get_compensation: 20  # illustrative placeholder, not a real operator figure
+  human_agent: 45  # illustrative placeholder, not a real operator figure
+  customer_service: 30  # illustrative placeholder, not a real operator figure
+  cancel_plan: 25  # illustrative placeholder, not a real operator figure
+  change_provider: 15  # illustrative placeholder, not a real operator figure
+  activate_phone: 15  # illustrative placeholder, not a real operator figure
+  deactivate_phone: 10  # illustrative placeholder, not a real operator figure
+  install_internet: 20  # illustrative placeholder, not a real operator figure
+
+# MULTI-HEAD documents urgency labels low, medium, and emergency, and it documents no accuracy metric.
+# Precision and recall here are assumptions. They are not a measured score from that model.
+triage:
+  prevalence: 0.08  # illustrative placeholder, not a real operator figure
+  recall: 0.75  # illustrative placeholder, not a real operator figure
+  precision: 0.40  # illustrative placeholder, not a real operator figure
+  value_per_true_positive: 250  # illustrative placeholder, not a real operator figure
+  penalty_per_false_negative: 250  # illustrative placeholder, not a real operator figure
+
+investment:
+  bot_build_cost: 2500000  # illustrative placeholder, not a real operator figure
+  bot_annual_licence: 600000  # illustrative placeholder, not a real operator figure
+  triage_build_cost: 400000  # illustrative placeholder, not a real operator figure
+  triage_annual_licence: 180000  # illustrative placeholder, not a real operator figure
+
+sensitivity_relative_swing: 0.20  # illustrative placeholder, not a real operator figure
