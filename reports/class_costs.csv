@@ -1,0 +1,4 @@
+automation_class,n_intents,share_of_intent_names,assumed_demand_share,cost_per_contact,currency_label
+lookup,7,0.2692,0.4000,40.3467,KES (illustrative)
+structured_transaction,8,0.3077,0.2650,86.9067,KES (illustrative)
+human_required,11,0.4231,0.3350,111.4876,KES (illustrative)

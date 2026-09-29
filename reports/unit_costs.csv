@@ -1,0 +1,7 @@
+channel_id,channel,cost_per_completed_contact,currency_label,label
+voice_agent,Agent (voice),111.0476,KES (illustrative),"illustrative placeholder inputs, not a real operator figure"
+ivr,IVR,4.4000,KES (illustrative),"illustrative placeholder inputs, not a real operator figure"
+ussd_bot,USSD bot,1.2000,KES (illustrative),"illustrative placeholder inputs, not a real operator figure"
+live_chat,Chat (staffed),133.0000,KES (illustrative),"illustrative placeholder inputs, not a real operator figure"
+chat_bot,Chat bot (unstaffed),3.0000,KES (illustrative),"illustrative placeholder inputs, not a real operator figure"
+senior_agent,Senior agent,200.7143,KES (illustrative),"illustrative placeholder inputs, not a real operator figure"

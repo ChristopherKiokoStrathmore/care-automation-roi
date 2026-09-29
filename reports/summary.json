@@ -1,0 +1,82 @@
+{
+  "assumption_driven": true,
+  "base_year1_net_cash": "1,043,640.00",
+  "currency_label": "KES (illustrative)",
+  "scenarios": {
+    "baseline_voice_only": {
+      "annual_operating_cost": "13,325,714.29",
+      "annual_operating_saving_vs_baseline": "0.00",
+      "assumed_quality_value": "0.00",
+      "cost_per_contact": "111.0476",
+      "net_annual_benefit": "0.00",
+      "payback_months": "not defined",
+      "year1_net_cash": "0.00",
+      "year1_roi": "not defined"
+    },
+    "bot_base": {
+      "annual_operating_cost": "9,182,074.29",
+      "annual_operating_saving_vs_baseline": "4,143,640.00",
+      "assumed_quality_value": "0.00",
+      "cost_per_contact": "76.5173",
+      "net_annual_benefit": "3,543,640.00",
+      "payback_months": "8.47",
+      "year1_net_cash": "1,043,640.00",
+      "year1_roi": "0.4175"
+    },
+    "bot_base_triage": {
+      "annual_operating_cost": "11,417,620.29",
+      "annual_operating_saving_vs_baseline": "1,908,094.00",
+      "assumed_quality_value": "1,200,000.00",
+      "cost_per_contact": "95.1468",
+      "net_annual_benefit": "2,328,094.00",
+      "payback_months": "14.95",
+      "year1_net_cash": "-571,906.00",
+      "year1_roi": "-0.1972"
+    },
+    "bot_base_triage_no_quality_value": {
+      "annual_operating_cost": "11,417,620.29",
+      "annual_operating_saving_vs_baseline": "1,908,094.00",
+      "assumed_quality_value": "0.00",
+      "cost_per_contact": "95.1468",
+      "net_annual_benefit": "1,128,094.00",
+      "payback_months": "30.85",
+      "year1_net_cash": "-1,771,906.00",
+      "year1_roi": "-0.6110"
+    },
+    "bot_high": {
+      "annual_operating_cost": "7,656,280.00",
+      "annual_operating_saving_vs_baseline": "5,669,434.29",
+      "assumed_quality_value": "0.00",
+      "cost_per_contact": "63.8023",
+      "net_annual_benefit": "5,069,434.29",
+      "payback_months": "5.92",
+      "year1_net_cash": "2,569,434.29",
+      "year1_roi": "1.0278"
+    },
+    "bot_low": {
+      "annual_operating_cost": "10,618,586.29",
+      "annual_operating_saving_vs_baseline": "2,707,128.00",
+      "assumed_quality_value": "0.00",
+      "cost_per_contact": "88.4882",
+      "net_annual_benefit": "2,107,128.00",
+      "payback_months": "14.24",
+      "year1_net_cash": "-392,872.00",
+      "year1_roi": "-0.1571"
+    }
+  },
+  "triage_rates": {
+    "false_negative": "0.0200",
+    "false_positive": "0.0900",
+    "predicted_positive": "0.1500",
+    "true_negative": "0.8300",
+    "true_positive": "0.0600"
+  },
+  "unit_costs": {
+    "chat_bot": "3.0000",
+    "ivr": "4.4000",
+    "live_chat": "133.0000",
+    "senior_agent": "200.7143",
+    "ussd_bot": "1.2000",
+    "voice_agent": "111.0476"
+  }
+}

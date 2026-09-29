@@ -1,0 +1,12 @@
+factor_id,label,input_low,input_high,low_clamped,high_clamped,year1_net_cash_low,year1_net_cash_high,payback_months_low,payback_months_high,base_year1_net_cash,base_payback_months
+handle_time_minutes.voice_agent,Voice-agent handle time,6.4,9.6,false,false,"188,262.40","1,899,017.60",11.16,6.82,"1,043,640.00",8.47
+volume.annual_contacts,Annual contacts,96000,144000,false,false,"214,912.00","1,872,368.00",11.05,6.86,"1,043,640.00",8.47
+wages.monthly_productive_hours,Monthly productive hours,112,168,false,false,"1,997,320.00","407,853.33",6.67,10.32,"1,043,640.00",8.47
+wages.voice_agent_monthly_wage,Voice-agent monthly wage,64000,96000,false,false,"280,696.00","1,806,584.00",10.79,6.97,"1,043,640.00",8.47
+containment_rate.lookup.ussd_bot,Lookup USSD containment,0.56,0.84,false,false,"446,648.00","1,640,632.00",10.18,7.25,"1,043,640.00",8.47
+investment.bot_build_cost,Bot build cost,2000000,3000000,false,false,"1,543,640.00","543,640.00",6.77,10.16,"1,043,640.00",8.47
+routing_share.lookup.ussd_bot,Lookup USSD offer share,0.64,0.85,false,true,"455,864.00","1,227,320.00",10.15,8.05,"1,043,640.00",8.47
+wages.burden_rate,Wage burden rate,0.24,0.36,false,false,"867,576.00","1,219,704.00",8.91,8.07,"1,043,640.00",8.47
+investment.bot_annual_licence,Bot annual licence,480000,720000,false,false,"1,163,640.00","923,640.00",8.19,8.76,"1,043,640.00",8.47
+containment_rate.structured_transaction.ussd_bot,Transaction USSD containment,0.32,0.48,false,false,"958,888.46","1,128,391.54",8.67,8.27,"1,043,640.00",8.47
+channel_variable.ussd_per_session,USSD cost per session,0.8,1.2,false,false,"1,055,145.60","1,032,134.40",8.44,8.49,"1,043,640.00",8.47

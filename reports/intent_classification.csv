@@ -1,0 +1,27 @@
+category,intent,n_examples,automation_class,rule_clause,demand_weight,demand_share,note
+SERVICES,activate_phone,1000,human_required,explicit_human_or_dispute,15,0.0150,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SUBSCRIPTION,cancel_plan,1000,human_required,explicit_human_or_dispute,25,0.0250,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SUBSCRIPTION,change_provider,1000,human_required,explicit_human_or_dispute,15,0.0150,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+CONTACT,customer_service,1000,human_required,explicit_human_or_dispute,30,0.0300,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SERVICES,deactivate_phone,1000,human_required,explicit_human_or_dispute,10,0.0100,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+BILLING,dispute_invoice,1000,human_required,explicit_human_or_dispute,35,0.0350,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+COMPLAINTS,get_compensation,1000,human_required,category_complaints,20,0.0200,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+CONTACT,human_agent,1000,human_required,explicit_human_or_dispute,45,0.0450,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SERVICES,install_internet,1000,human_required,explicit_human_or_dispute,20,0.0200,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+COMPLAINTS,report_poor_signal_coverage,1000,human_required,category_complaints,40,0.0400,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+COMPLAINTS,report_problem,1000,human_required,category_complaints,80,0.0800,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SUBSCRIPTION,check_cancellation_fee,1000,lookup,lookup_name,15,0.0150,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+CONSUMPTION,check_excess_data_charges,1000,lookup,lookup_name,40,0.0400,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+PAYMENT,check_mobile_payments,1000,lookup,lookup_name,50,0.0500,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SERVICES,check_signal_coverage,1000,lookup,lookup_name,35,0.0350,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+CONSUMPTION,check_usage,1000,lookup,lookup_name,140,0.1400,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+BILLING,invoices,1000,lookup,lookup_name,90,0.0900,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+PAYMENT,payment_methods,1000,lookup,lookup_name,30,0.0300,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SERVICES,activate_call_management_services,1000,structured_transaction,explicit_transaction,15,0.0150,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SERVICES,activate_roaming,1000,structured_transaction,explicit_transaction,20,0.0200,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SUBSCRIPTION,change_plan,1000,structured_transaction,explicit_transaction,45,0.0450,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SERVICES,deactivate_call_management_services,1000,structured_transaction,explicit_transaction,10,0.0100,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+PAYMENT,pay,1000,structured_transaction,explicit_transaction,100,0.1000,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+PAYMENT,schedule_payments,1000,structured_transaction,explicit_transaction,25,0.0250,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+CONSUMPTION,set_usage_limits,1000,structured_transaction,explicit_transaction,20,0.0200,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
+SUBSCRIPTION,sign_up_for_plan,1000,structured_transaction,explicit_transaction,30,0.0300,n_examples is the Bitext training count. demand_share is the assumption weight over the sum of weights.
