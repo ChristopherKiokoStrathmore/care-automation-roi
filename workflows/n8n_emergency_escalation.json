@@ -1,0 +1,182 @@
+{
+  "name": "Emergency triage escalation",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Not executed\n\nThis file is an n8n workflow export written for import. It has not been imported into a running n8n instance, and it has not been run against a live queue, a live model, or a contact-centre platform.\n\nRule: if the triage urgency label is `emergency` (the urgent class in the public MULTI-HEAD label set: low, medium, emergency), set the queue to senior_agent. Otherwise set the queue to standard_automation_path.\n\nPrecision and recall are not stored in this workflow. They are assumptions in assumptions.yaml.",
+        "height": 280,
+        "width": 460,
+        "color": 4
+      },
+      "id": "8d6a1c2e-4b7f-4e1a-9c3d-1a2b3c4d5e6f",
+      "name": "Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        40
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "triage-emergency-escalation",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "a11b2c3d-4e5f-4678-9abc-def012345678",
+      "name": "Triage webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        400
+      ],
+      "webhookId": "b22c3d4e-5f60-4789-abcd-ef1234567890"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-urgency-emergency",
+              "leftValue": "={{ $json.body.urgency || $json.urgency }}",
+              "rightValue": "emergency",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c33d4e5f-6071-4890-bcde-f12345678901",
+      "name": "Urgency is emergency",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        520,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "assign-queue-senior",
+              "name": "queue",
+              "value": "senior_agent",
+              "type": "string"
+            },
+            {
+              "id": "assign-reason-senior",
+              "name": "reason",
+              "value": "triage urgency label is emergency",
+              "type": "string"
+            },
+            {
+              "id": "assign-urgency-senior",
+              "name": "urgency",
+              "value": "={{ $json.body.urgency || $json.urgency }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d44e5f60-7182-4901-cdef-123456789012",
+      "name": "Route to senior queue",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        820,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "assign-queue-standard",
+              "name": "queue",
+              "value": "standard_automation_path",
+              "type": "string"
+            },
+            {
+              "id": "assign-reason-standard",
+              "name": "reason",
+              "value": "triage urgency label is not emergency",
+              "type": "string"
+            },
+            {
+              "id": "assign-urgency-standard",
+              "name": "urgency",
+              "value": "={{ $json.body.urgency || $json.urgency }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e55f6071-8293-4012-def0-234567890123",
+      "name": "Route to standard path",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        820,
+        520
+      ]
+    }
+  ],
+  "connections": {
+    "Triage webhook": {
+      "main": [
+        [
+          {
+            "node": "Urgency is emergency",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Urgency is emergency": {
+      "main": [
+        [
+          {
+            "node": "Route to senior queue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route to standard path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "tags": []
+}
