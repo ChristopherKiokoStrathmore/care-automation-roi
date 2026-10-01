@@ -1,8 +1,8 @@
 # Contact-centre automation ROI and cost-to-serve
 
-![Cost per contact and year-1 net cash for the six scenarios](assets/hero.png)
+![Problem, method, and result: voice-agent cost, the model pipeline, and base-case payback](assets/hero.png)
 
-*Cost per contact and year-1 net cash for the six scenarios, from `python -m care_roi`. The gold bar is the bot programme at base containment. Every input is an illustrative placeholder. Currency is KES (illustrative). Baseline payback and year-1 ROI are not defined.*
+*Problem, method, and result. The left panel is the voice-agent cost to serve, the middle panel is the model pipeline, and the right panel is base-case payback and year-1 ROI. The gold bar is the bot programme at base containment. Illustrative inputs. Currency is KES (illustrative).*
 
 [![CI](https://github.com/ChristopherKiokoStrathmore/care-automation-roi/actions/workflows/ci.yml/badge.svg)](https://github.com/ChristopherKiokoStrathmore/care-automation-roi/actions/workflows/ci.yml)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)
