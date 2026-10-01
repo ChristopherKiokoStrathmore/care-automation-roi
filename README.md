@@ -1,5 +1,9 @@
 # Contact-centre automation ROI and cost-to-serve
 
+![Cost per contact and year-1 net cash for the six scenarios](assets/hero.png)
+
+*Cost per contact and year-1 net cash for the six scenarios, from `python -m care_roi`. The gold bar is the bot programme at base containment. Every input is an illustrative placeholder. Currency is KES (illustrative). Baseline payback and year-1 ROI are not defined.*
+
 [![CI](https://github.com/ChristopherKiokoStrathmore/care-automation-roi/actions/workflows/ci.yml/badge.svg)](https://github.com/ChristopherKiokoStrathmore/care-automation-roi/actions/workflows/ci.yml)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -19,6 +23,12 @@ These headline figures are the committed outputs in `reports/summary.json`, prod
 - Metrics computed: cost per contact, annual operating saving, net annual benefit, payback months, year-1 ROI, year-1 net cash, plus a sensitivity analysis.
 - 25 automated tests; CI regenerates reports and checks they match.
 - All inputs are illustrative placeholders (KES, illustrative); swap in real data and rerun.
+
+## Demo
+
+![Terminal recording of the cost model CLI](assets/demo.gif)
+
+*Terminal recording of the CLI. It runs the model into a temporary directory, repeats the run with `volume.annual_contacts` set to 100000, then checks the committed reports. The text is the process stdout. Illustrative placeholders.*
 
 ## Problem
 
@@ -43,6 +53,10 @@ The baseline sends every contact to a voice agent. The bot programme offers each
 
 Triage is a separate switch on the base containment path. The public [MULTI-HEAD](https://github.com/ChristopherKiokoStrathmore/MULTI-HEAD-) classifier has urgency labels `low`, `medium`, and `emergency`. This model treats `emergency` as the urgent class. A predicted emergency contact skips the bot and pays the senior-agent unit cost. Prevalence, precision, and recall are assumptions, checked so they can sit in one confusion matrix: precision must be at least recall times prevalence. The true-positive value and the false-negative penalty are assumptions as well. They are reported in their own column so they are not mixed into the operating cost. MULTI-HEAD documents no accuracy metric. This repo does not treat any triage accuracy as a measured figure. The smoke gates in that repo are described there as harness-health thresholds, and they are not copied in as model quality.
 
+![Assumed demand share and cost per contact by automation class](assets/class_costs.png)
+
+*Assumed demand share and cost per contact under base routing. Demand shares are the weights in `demand_weight_by_intent`, not the Bitext training counts. Illustrative placeholders. Currency is KES (illustrative).*
+
 ## Costs
 
 Unit cost of a contact completed on a channel, with no spill:
@@ -52,6 +66,10 @@ Unit cost of a contact completed on a channel, with no spill:
 - IVR: IVR minutes times the IVR per-minute charge, plus an IVR platform charge.
 - USSD bot: sessions per contact times the cost per session.
 - Chat bot: the unstaffed platform charge only.
+
+![Unit cost of one completed contact by channel](assets/unit_costs.png)
+
+*Unit cost of one completed contact, with no spill. The gold bar is the voice agent. Illustrative placeholders. Currency is KES (illustrative).*
 
 Build cost and the annual licence sit outside the unit cost. The bot programme uses `investment.bot_build_cost` and `investment.bot_annual_licence`. The triage scenarios add `investment.triage_build_cost` and `investment.triage_annual_licence` on top of the bot figures. The currency label is KES (illustrative).
 
@@ -64,6 +82,10 @@ Net annual benefit is the operating saving, plus the assumed quality value, minu
 ## ROI and payback
 
 The model has no discount rate and does not compute NPV. Payback in months is build cost divided by net annual benefit over 12, and it is undefined when net annual benefit is not positive. Year-1 ROI is (net annual benefit minus build cost) divided by build cost. Year-1 net cash is net annual benefit minus build cost. Build cost is treated as spent in year 1, so a payback longer than 12 months goes with a negative year-1 ROI. There is no tax and no ramp-up.
+
+![Payback in months for scenarios where payback is defined](assets/payback_months.png)
+
+*Payback in months where it is defined. The dashed line is 12 months. The voice baseline is omitted because payback is not defined when licence and build cost are zero. Illustrative placeholders.*
 
 ## Sensitivity
 
