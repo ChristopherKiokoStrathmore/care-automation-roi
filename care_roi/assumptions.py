@@ -10,7 +10,9 @@ from pathlib import Path
 
 import yaml
 
-PLACEHOLDER = "illustrative placeholder"
+HEADER_REQUIREMENT = (
+    "every value in this file is an illustrative placeholder, not a real operator figure"
+)
 NUMBER_LINE = re.compile(
     r"^(\s*)([A-Za-z0-9_]+):\s*([+-]?(?:\d+\.\d+|\d+))\s*(#.*)?$"
 )
@@ -88,23 +90,42 @@ def load_raw(path: Path) -> dict:
 
 
 def check_placeholder_comments(path: Path) -> list[str]:
-    """Return problems. Every numeric YAML value must carry the placeholder comment."""
+    """Return problems.
+
+    Labelling is one header block, not a comment on each number. The header
+    must say every value in the file is an illustrative placeholder, not a
+    real operator figure, and it must sit before the first YAML key. A
+    per-line placeholder comment does not satisfy the check.
+    """
     problems: list[str] = []
-    for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+    lines = path.read_text(encoding="utf-8").splitlines()
+    header: list[str] = []
+    seen_yaml = False
+    numeric_lines = 0
+    for line in lines:
         stripped = line.strip()
-        if not stripped or stripped.startswith("#"):
+        if not seen_yaml:
+            if not stripped:
+                continue
+            if stripped.startswith("#"):
+                header.append(stripped.lstrip("#").strip())
+                continue
+            seen_yaml = True
+        if stripped.startswith("#") or not stripped:
             continue
         match = NUMBER_LINE.match(line)
-        if match is None:
-            # A numeric-looking value that the pattern missed still needs a comment.
-            if re.search(r":\s*[+-]?(?:\d+\.\d+|\d+)\s*$", line):
-                problems.append(f"{path}:{lineno} numeric value has no comment")
+        bare_number = re.search(r":\s*[+-]?(?:\d+\.\d+|\d+)\s*$", line)
+        if match is None and bare_number is None:
             continue
-        comment = match.group(4) or ""
-        if PLACEHOLDER not in comment:
-            problems.append(
-                f"{path}:{lineno} comment must say it is an illustrative placeholder"
-            )
+        numeric_lines += 1
+    header_text = " ".join(header).lower()
+    if HEADER_REQUIREMENT not in header_text:
+        problems.append(
+            f"{path}: header must say every value in the file is an "
+            "illustrative placeholder, not a real operator figure"
+        )
+    if numeric_lines == 0:
+        problems.append(f"{path}: no numeric values found for the header to cover")
     return problems
 
 

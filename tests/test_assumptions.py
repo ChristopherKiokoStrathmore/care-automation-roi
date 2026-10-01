@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from care_roi.assumptions import check_placeholder_comments, load_assumptions
+from care_roi.assumptions import NUMBER_LINE, check_placeholder_comments, load_assumptions
 from care_roi.model import fully_loaded_hourly, timed_agent_cost, unit_costs
 from care_roi.taxonomy import load_taxonomy
 
@@ -10,8 +10,29 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_every_numeric_assumption_is_labelled_as_a_placeholder():
-    problems = check_placeholder_comments(ROOT / "assumptions.yaml")
+    path = ROOT / "assumptions.yaml"
+    problems = check_placeholder_comments(path)
     assert problems == []
+    text = path.read_text(encoding="utf-8").lower()
+    assert "every value in this file is an illustrative placeholder, not a real operator figure" in text
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if NUMBER_LINE.match(line):
+            assert "# illustrative placeholder" not in line
+
+
+def test_missing_header_is_rejected_even_with_a_per_line_placeholder_comment(tmp_path: Path):
+    labelled_only_on_the_line = tmp_path / "assumptions.yaml"
+    labelled_only_on_the_line.write_text(
+        "volume:\n  annual_contacts: 1  # illustrative placeholder, not a real operator figure\n",
+        encoding="utf-8",
+    )
+    problems = check_placeholder_comments(labelled_only_on_the_line)
+    assert problems
+    assert any("header" in item for item in problems)
+
+    unlabelled = tmp_path / "bare.yaml"
+    unlabelled.write_text("volume:\n  annual_contacts: 1\n", encoding="utf-8")
+    assert check_placeholder_comments(unlabelled)
 
 
 def test_portfolio_voice_cost_uses_the_yaml_wage():

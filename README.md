@@ -1,14 +1,23 @@
 # Contact-centre automation ROI and cost-to-serve
 
+[![CI](https://github.com/ChristopherKiokoStrathmore/care-automation-roi/actions/workflows/ci.yml/badge.svg)](https://github.com/ChristopherKiokoStrathmore/care-automation-roi/actions/workflows/ci.yml)
+![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Automating customer care saves agent time, but at what licence and build cost, and how sensitive is the case to containment rates?
 
-This repo is a configurable cost-benefit model: editable assumptions in `assumptions.yaml`, 6 scenarios, cost to serve per contact, payback and year-1 ROI, a sensitivity tornado, and an n8n escalation workflow. Structured as a cost-benefit analysis. Part of an independent portfolio series on telecom customer analytics, built alongside my MSc in Data Science. It builds on the CRISP-DM projects in that series.
+This repo is a configurable cost-benefit model: editable assumptions in `assumptions.yaml`, 6 scenarios, cost to serve per contact, payback and year-1 ROI, a sensitivity tornado, and an n8n prototype export for escalation. Structured as a cost-benefit analysis. Part of an independent portfolio series on telecom customer analytics, built alongside my MSc in Data Science. It builds on the CRISP-DM projects in that series.
 
 ## Key results (capability and scope)
 
+These headline figures are the committed outputs in `reports/summary.json`, produced from the illustrative inputs in `assumptions.yaml`.
+
+- Base-case payback (bot programme at base containment) is 8.47 months.
+- Year-1 ROI on that base case is 0.4175.
+- Low-containment year-1 ROI is -0.1571.
 - 6 scenarios from voice-only baseline to bot with triage routing.
 - Metrics computed: cost per contact, annual operating saving, net annual benefit, payback months, year-1 ROI, year-1 net cash, plus a sensitivity analysis.
-- 24 automated tests; CI regenerates reports and checks they match.
+- 25 automated tests; CI regenerates reports and checks they match.
 - All inputs are illustrative placeholders (KES, illustrative); swap in real data and rerun.
 
 ## Problem
@@ -68,9 +77,11 @@ The conditional reading is: the bot programme clears a one-year test when contai
 
 ## Implementation note
 
-The n8n export is [workflows/n8n_emergency_escalation.json](workflows/n8n_emergency_escalation.json). [workflows/README.md](workflows/README.md) says how to import it. The file is an export only. It has not been imported into a running n8n instance, and it has not been run live.
+The n8n file is a prototype export: [workflows/n8n_emergency_escalation.json](workflows/n8n_emergency_escalation.json). [workflows/README.md](workflows/README.md) says how to import it. It has not been imported into a running n8n instance, and it has not been run live.
 
 ## How to run
+
+Requires Python 3.12.
 
 ```bash
 pip install -r requirements.txt
@@ -88,7 +99,7 @@ python -m care_roi --set volume.annual_contacts=100000 --out /tmp/roi-try
 
 `--check` regenerates the text reports in a temporary directory and compares them to `reports/`.
 
-`pytest` checks the unit-cost formula, a containment case, the triage counts, payback, the intent rule, the placeholder comments, and that `reports/` plus the generated README block match a fresh run. GitHub Actions runs that suite on `main`.
+`pytest` checks the unit-cost formula, a containment case, the triage counts, payback, the intent rule, the header that labels every assumption value as an illustrative placeholder, and that `reports/` plus the generated README block match a fresh run. GitHub Actions runs that suite on `main`.
 
 ## Replace these assumptions with operator data
 
@@ -311,5 +322,12 @@ Currency code: KES. Currency label: KES (illustrative).
 - Emergency status is modelled as independent of the intent class. A real operation may see emergencies concentrated in complaint intents.
 - Triage precision and recall are assumptions. MULTI-HEAD does not publish an accuracy figure that this repo uses. Routing value is an assumption, shown separately, and the zero-value row is there so the operating cost can be read on its own.
 - Payback and year-1 ROI ignore discounting, tax, implementation delay, and the cost of a wrong containment definition.
-- The n8n file has not been imported or executed. It does not prove that a live escalation path exists.
+- The n8n file is a prototype export. It has not been imported or executed. It does not prove that a live escalation path exists.
 - The calculation stands alone. It does not connect to a live operator cost system or a customer-experience platform.
+
+## Related projects in this series
+
+- [telco-churn-nba-engine](https://github.com/ChristopherKiokoStrathmore/telco-churn-nba-engine)
+- [responsible-ai-pack](https://github.com/ChristopherKiokoStrathmore/responsible-ai-pack)
+- [omnichannel-care-analytics](https://github.com/ChristopherKiokoStrathmore/omnichannel-care-analytics)
+- [digital-care-roadmap](https://github.com/ChristopherKiokoStrathmore/digital-care-roadmap)
