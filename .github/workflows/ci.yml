@@ -17,3 +17,22 @@ jobs:
         run: pip install -r requirements.txt
       - name: Test
         run: python -m pytest -q
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Verify committed figures
+        run: npm run verify
+      - name: Build
+        run: npm run build

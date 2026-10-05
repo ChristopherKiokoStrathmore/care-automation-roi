@@ -24,6 +24,14 @@ These headline figures are the committed outputs in `reports/summary.json`, prod
 - 25 automated tests; CI regenerates reports and checks they match.
 - All inputs are illustrative placeholders (KES, illustrative); swap in real data and rerun.
 
+## Live demo
+
+Interactive cost-benefit calculator for these assumptions and formulas: editable inputs, the six scenarios, payback, year-1 ROI, and the sensitivity tornado. The app is the Next.js project in [`web/`](web/). Currency is KES (illustrative).
+
+**Live demo:** placeholder — replace this with the Vercel deployment URL.
+
+Deploy on Vercel with the project **Root Directory** set to `web`. From `web/`, `npm install`, `npm run dev`, and `npm run build`. `npm run verify` checks the default case against `reports/`.
+
 ## Demo
 
 ![Terminal recording of the cost model CLI](assets/demo.gif)
