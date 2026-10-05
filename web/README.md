@@ -1,8 +1,10 @@
-# Care automation ROI calculator
+# Care automation ROI demo
 
-Next.js App Router frontend for the cost-benefit model in the parent repository. Sliders and inputs recompute scenarios, payback, year-1 ROI, and the sensitivity tornado from the formulas in `care_roi/`.
+Next.js App Router frontend for the cost-benefit model in the parent repository. The page opens on the interactive demo: sliders and inputs recompute scenarios, payback, year-1 ROI, and the sensitivity tornado from the formulas in `care_roi/`. The write-up is the other tab.
 
 Illustrative inputs. Currency is KES (illustrative).
+
+Live site: [https://care-automation-roi.vercel.app](https://care-automation-roi.vercel.app)
 
 ## Run
 

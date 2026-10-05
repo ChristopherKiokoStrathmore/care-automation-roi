@@ -16,7 +16,7 @@ import {
 
 const INTENTS = loadIntents();
 
-interface SliderSpec {
+export interface SliderSpec {
   path: string;
   label: string;
   min: number;
@@ -128,7 +128,7 @@ function readPath(draft: AssumptionDraft, path: string): string {
   return typeof node === "string" ? node : "";
 }
 
-function SliderField({
+export function SliderField({
   spec,
   value,
   onValue,
@@ -190,13 +190,26 @@ export function AssumptionControls({
   edited,
   onDraft,
   onReset,
+  excludePaths,
+  showIntro = true,
 }: {
   draft: AssumptionDraft;
   shares: Record<string, string> | null;
   edited: boolean;
   onDraft: (next: AssumptionDraft) => void;
   onReset: () => void;
+  excludePaths?: ReadonlySet<string>;
+  showIntro?: boolean;
 }) {
+  const hidden = excludePaths ?? new Set<string>();
+  const drivers = DRIVERS.filter((spec) => !hidden.has(spec.path));
+  const programme = PROGRAMME.filter((spec) => !hidden.has(spec.path));
+  const labour = LABOUR.filter((spec) => !hidden.has(spec.path));
+  const channels = CHANNELS.filter((spec) => !hidden.has(spec.path));
+  const triage = TRIAGE.filter((spec) => !hidden.has(spec.path));
+  const extraContainment = EXTRA_CONTAINMENT.filter(
+    ({ className, channel }) => !hidden.has(`containment_rate.${className}.${channel}`),
+  );
   const apply = (spec: SliderSpec, value: string) => {
     if (spec.balanceLookupUssd) {
       onDraft(setRoutingShare(draft, "lookup", "ussd_bot", value));
@@ -205,36 +218,32 @@ export function AssumptionControls({
     onDraft(setDraftPath(draft, spec.path, value));
   };
 
-  return (
+  const fields = (
     <>
-      <div className="control-bar wrap">
-        <div>
-          <h2>Assumptions</h2>
-          <p className="section-note">
-            Every control writes the same input the model reads. Sliders recompute payback, year-1 ROI, the six scenarios, and the tornado.
-          </p>
-        </div>
-        <button type="button" className="button" onClick={onReset} disabled={!edited}>
-          Reset to committed inputs
-        </button>
-      </div>
-      <div className="wrap">
+      {showIntro ? null : (
+        <p className="section-note">
+          The demo levers cover containment, volume, the voice-agent wage, and bot build cost. Routing shares, channel charges, triage, demand weights, and the remaining inputs are here. Each one writes the field the model reads.
+        </p>
+      )}
+      {drivers.length > 0 ? (
         <fieldset>
           <legend>What the tornado moves</legend>
           <div className="field-grid">
-            {DRIVERS.map((spec) => (
+            {drivers.map((spec) => (
               <SliderField key={spec.path} idPrefix="tornado-" spec={spec} value={readPath(draft, spec.path)} onValue={(value) => apply(spec, value)} />
             ))}
           </div>
         </fieldset>
+      ) : null}
 
+      {programme.length > 0 || extraContainment.length > 0 ? (
         <fieldset>
           <legend>Programme and other containment</legend>
           <div className="field-grid">
-            {PROGRAMME.map((spec) => (
+            {programme.map((spec) => (
               <SliderField key={spec.path} idPrefix="programme-" spec={spec} value={readPath(draft, spec.path)} onValue={(value) => apply(spec, value)} />
             ))}
-            {EXTRA_CONTAINMENT.map(({ className, channel }) => {
+            {extraContainment.map(({ className, channel }) => {
               const spec: SliderSpec = {
                 path: `containment_rate.${className}.${channel}`,
                 label: `${CLASS_LABEL[className]} ${CHANNEL_LABEL[channel]} containment`,
@@ -247,15 +256,18 @@ export function AssumptionControls({
             })}
           </div>
         </fieldset>
+      ) : null}
 
+      {labour.length > 0 ? (
         <fieldset>
           <legend>Other labour</legend>
           <div className="field-grid">
-            {LABOUR.map((spec) => (
+            {labour.map((spec) => (
               <SliderField key={spec.path} idPrefix="labour-" spec={spec} value={readPath(draft, spec.path)} onValue={(value) => apply(spec, value)} />
             ))}
           </div>
         </fieldset>
+      ) : null}
 
         <details className="drawer">
           <summary>Routing shares</summary>
@@ -294,26 +306,30 @@ export function AssumptionControls({
           })}
         </details>
 
-        <details className="drawer">
-          <summary>Channel charges</summary>
-          <div className="field-grid">
-            {CHANNELS.map((spec) => (
-              <SliderField key={spec.path} idPrefix="charge-" spec={spec} value={readPath(draft, spec.path)} onValue={(value) => apply(spec, value)} />
-            ))}
-          </div>
-        </details>
+        {channels.length > 0 ? (
+          <details className="drawer">
+            <summary>Channel charges</summary>
+            <div className="field-grid">
+              {channels.map((spec) => (
+                <SliderField key={spec.path} idPrefix="charge-" spec={spec} value={readPath(draft, spec.path)} onValue={(value) => apply(spec, value)} />
+              ))}
+            </div>
+          </details>
+        ) : null}
 
-        <details className="drawer">
-          <summary>Triage assumptions</summary>
-          <p className="section-note">
-            Precision and recall are assumptions. They have to be able to sit in one confusion matrix. The quality value is reported on its own and is removed in the last scenario.
-          </p>
-          <div className="field-grid">
-            {TRIAGE.map((spec) => (
-              <SliderField key={spec.path} idPrefix="triage-" spec={spec} value={readPath(draft, spec.path)} onValue={(value) => apply(spec, value)} />
-            ))}
-          </div>
-        </details>
+        {triage.length > 0 ? (
+          <details className="drawer">
+            <summary>Triage assumptions</summary>
+            <p className="section-note">
+              Precision and recall are assumptions. They have to be able to sit in one confusion matrix. The quality value is reported on its own and is removed in the last scenario.
+            </p>
+            <div className="field-grid">
+              {triage.map((spec) => (
+                <SliderField key={spec.path} idPrefix="triage-" spec={spec} value={readPath(draft, spec.path)} onValue={(value) => apply(spec, value)} />
+              ))}
+            </div>
+          </details>
+        ) : null}
 
         <details className="drawer">
           <summary>Demand weights</summary>
@@ -353,7 +369,25 @@ export function AssumptionControls({
             <li>Pay, plan change, roaming, limits, and call-management intents are structured transactions.</li>
           </ol>
         </details>
+    </>
+  );
+
+  if (!showIntro) return fields;
+
+  return (
+    <>
+      <div className="control-bar wrap">
+        <div>
+          <h2>Assumptions</h2>
+          <p className="section-note">
+            Every control writes the same input the model reads. Sliders recompute payback, year-1 ROI, the six scenarios, and the tornado.
+          </p>
+        </div>
+        <button type="button" className="button" onClick={onReset} disabled={!edited}>
+          Reset to committed inputs
+        </button>
       </div>
+      <div className="wrap">{fields}</div>
     </>
   );
 }
