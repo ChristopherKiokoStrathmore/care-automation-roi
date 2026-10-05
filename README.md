@@ -1,5 +1,7 @@
 # Contact-centre automation ROI and cost-to-serve
 
+**[Live demo](https://care-automation-roi.vercel.app)**
+
 ![Problem, method, and result: voice-agent cost, the model pipeline, and base-case payback](assets/hero.png)
 
 *Problem, method, and result. The left panel is the voice-agent cost to serve, the middle panel is the model pipeline, and the right panel is base-case payback and year-1 ROI. The gold bar is the bot programme at base containment. Illustrative inputs. Currency is KES (illustrative).*
@@ -28,7 +30,7 @@ These headline figures are the committed outputs in `reports/summary.json`, prod
 
 Interactive cost-benefit calculator for these assumptions and formulas: editable inputs, the six scenarios, payback, year-1 ROI, and the sensitivity tornado. The app is the Next.js project in [`web/`](web/). Currency is KES (illustrative).
 
-**Live demo:** placeholder — replace this with the Vercel deployment URL.
+**Live demo:** [https://care-automation-roi.vercel.app](https://care-automation-roi.vercel.app)
 
 Deploy on Vercel with the project **Root Directory** set to `web`. From `web/`, `npm install`, `npm run dev`, and `npm run build`. `npm run verify` checks the default case against `reports/`.
 
