@@ -18,17 +18,17 @@ const sans = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  title: "Care automation ROI calculator",
+  title: "Care automation ROI demo",
   description:
-    "Illustrative cost-benefit calculator for contact-centre automation. Editable assumptions, scenarios, payback, year-1 ROI, and a sensitivity tornado. Currency is KES (illustrative).",
+    "Interactive cost-benefit demo for contact-centre automation. Change illustrative assumptions and see scenarios, payback, year-1 ROI, and a sensitivity tornado update. The write-up is on the same page. Currency is KES (illustrative).",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable}`}>
       <body>
-        <a className="skip" href="#calculator">
-          Skip to calculator
+        <a className="skip" href="#demo">
+          Skip to demo
         </a>
         <div className="banner" role="note">
           <p>

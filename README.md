@@ -1,6 +1,6 @@
 # Contact-centre automation ROI and cost-to-serve
 
-**[Live demo](https://care-automation-roi.vercel.app)**
+**[Open the interactive demo](https://care-automation-roi.vercel.app)** — change containment, volume, wages, and build cost, and watch payback, year-1 ROI, and the sensitivity tornado update. The write-up is on the same page.
 
 ![Problem, method, and result: voice-agent cost, the model pipeline, and base-case payback](assets/hero.png)
 
@@ -28,7 +28,7 @@ These headline figures are the committed outputs in `reports/summary.json`, prod
 
 ## Live demo
 
-Interactive cost-benefit calculator for these assumptions and formulas: editable inputs, the six scenarios, payback, year-1 ROI, and the sensitivity tornado. The app is the Next.js project in [`web/`](web/). Currency is KES (illustrative).
+The live site opens on an interactive demo of this model. Move containment, volume, wages, and build cost and the six scenarios, payback, year-1 ROI, and the sensitivity tornado recompute in the browser. The write-up — the question, the cost build-up, and how to read payback — is the other tab on that page. Inputs on the page are the illustrative placeholders from `assumptions.yaml`. Currency is KES (illustrative). The app is the Next.js project in [`web/`](web/).
 
 **Live demo:** [https://care-automation-roi.vercel.app](https://care-automation-roi.vercel.app)
 
