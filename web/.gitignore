@@ -3,3 +3,5 @@ node_modules
 out
 .vercel
 *.tsbuildinfo
+AGENTS.md
+CLAUDE.md
